@@ -17,7 +17,8 @@ The entire system supports authentication, bundle creation, real-time ratings an
 
 ## Brief Video 
 
-https://github.com/user-attachments/assets/027c32af-a1d3-40a4-8fe5-04b49d2ec0e4
+https://github.com/user-attachments/assets/5aaa032a-f0df-4982-8d32-8bf0029e8bc1
+
 
 Demo 
 
