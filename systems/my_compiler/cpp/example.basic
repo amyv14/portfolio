@@ -1,0 +1,8 @@
+print "countdown - enter a number";
+ let a = 0;
+ input a;
+ while a > 0 repeat
+	let a = a - 1;
+	print a;
+ endwhile
+print "the end";
