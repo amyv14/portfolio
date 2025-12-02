@@ -1,0 +1,32 @@
+/* styling */
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    background-color: rgba(155, 218, 255, 0.389);
+}
+
+table, th, td {
+    border: 1px solid grey;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: white;
+}
+
+td {
+    padding: 5px;
+}
+
+th {
+    background-color: #96D4D4;
+    padding: 5px;
+}
+
+tr:hover td {
+    background-color: lightgray;
+}
+
+label {
+    color: #258585;
+    font-weight: bold;
+}

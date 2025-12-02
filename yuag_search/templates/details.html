@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <style>
+        /* styling */
+        h1 {
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+        h2 {
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            color: #258585;
+        }
+        body {
+            background-color: rgba(155, 218, 255, 0.389);
+        }
+        pre {
+            font-weight: bold;
+        }
+    </style>
+    <title>Details Page</title>
+</head>
+<body>
+
+<h1>Details</h1>
+
+<h2>Summary</h2>
+<pre>{{ data.Summary|safe }}</pre>
+
+<h2>Label</h2>
+<pre>{{ data.Label|safe }}</pre>
+
+<h2>Produced By</h2>
+<pre>{{ data['Produced By']|safe }}</pre>
+
+<h2>Classified As</h2>
+<pre>{{ data['Classified As']|safe }}</pre>
+
+{% if image_url %}
+<h2>Image</h2>
+<img src="{{ image_url }}" alt="Image">
+{% endif %}
+
+<h2>Information</h2>
+<pre>{{ data.Information|safe }}</pre>
+
+</body>
+</html>

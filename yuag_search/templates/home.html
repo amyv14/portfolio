@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- link to external style sheeet -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+   <!-- UPDATED TO USE JQUERY FOR LIVE UPDATES -->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+   <!-- same just removed search bar -->
+   <h2>Search the YUAG</h2>
+
+   <label for="label">Label:</label>
+   <input type="text" id="label" value="{{ label }}"><br><br>
+
+   <label for="classifier">Classifier:</label>
+   <input type="text" id="classifier" value="{{ classifier }}"><br><br>
+
+   <label for="agent">Agent:</label>
+   <input type="text" id="agent" value="{{ agent }}"><br><br>
+
+   <label for="date">Date:</label>
+   <input type="text" id="date" value="{{ date }}"><br><br>
+
+   <div id="results"></div>
+
+   <script>
+   function fetchResults() {
+       // first grab the values
+       const label = $("#label").val().trim();
+       const agent = $("#agent").val().trim();
+       const classifier = $("#classifier").val().trim();
+       const date = $("#date").val().trim();
+
+       // if all fields are blank, return
+       if (!label && !agent && !classifier && !date) {
+           $("#results").html("");
+           return;
+       }
+
+       // sends GET request to the search route
+       $.get("/search", {
+           l: label,
+           a: agent,
+           c: classifier,
+           d: date
+       },
+       // runs once the server sends back a response
+       function(data) {
+           // if array is empty show no results
+           if (data.length === 0) {
+               $("#results").html("<p><strong>No results found.</strong></p>");
+               return;
+           }
+
+           // else build the html table
+           let html = "<table><thead><tr><th>Label</th><th>Date</th><th>Agents</th><th>Classified As</th></tr></thead><tbody>";
+           
+           // loop through each object in the returned array
+           // opens search result in new tab
+           for (let item of data) {
+               html += `<tr>
+                   <td><a href="/obj/${item.id}" target="_blank">${item.label}</a></td>
+                   <td>${item.date}</td>
+                   <td>${item.agents.join("<br>")}</td>
+                   <td>${item.classifiers.join("<br>")}</td>
+               </tr>`;
+           }
+
+           html += "</tbody></table>";
+           $("#results").html(html);
+       });
+
+       // set cookies so values persist on refresh
+       document.cookie = `label=${encodeURIComponent(label)}; path=/`;
+       document.cookie = `classifier=${encodeURIComponent(classifier)}; path=/`;
+       document.cookie = `agent=${encodeURIComponent(agent)}; path=/`;
+       document.cookie = `date=${encodeURIComponent(date)}; path=/`;
+   }
+
+   // live update on typing
+   $("#label, #classifier, #agent, #date").on("input", fetchResults);
+
+   // initial load which only runs fetch if there's any input
+   $(document).ready(function () {
+       const hasInput =
+           $("#label").val().trim() ||
+           $("#classifier").val().trim() ||
+           $("#agent").val().trim() ||
+           $("#date").val().trim();
+
+       if (hasInput) {
+           fetchResults();
+       }
+   });
+   </script>
+</body>
+</html>
