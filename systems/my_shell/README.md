@@ -7,7 +7,8 @@ A Unix-style command-line shell written in C that supports process creation, job
 ## Brief Video Demo
 
 
-https://github.com/user-attachments/assets/913c40d8-aee5-4990-95d9-de94504468ef
+https://github.com/user-attachments/assets/f64169bf-d66a-4d4e-a3e7-cc2462652730
+
 
 
 ## Overview
