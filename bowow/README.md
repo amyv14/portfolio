@@ -15,6 +15,12 @@ The entire system supports authentication, bundle creation, real-time ratings an
 
 ---
 
+## Brief Video 
+
+https://github.com/user-attachments/assets/027c32af-a1d3-40a4-8fe5-04b49d2ec0e4
+
+Demo 
+
 ## Tech Stack
 
 I built BowWow Builder as a fully integrated full-stack system using:
