@@ -80,7 +80,7 @@ std::vector<Token> tokenizer(const std::string &str)
 {
     // create vector to hold tokens
     std::vector<Token> tokens;
-    int i = 0;
+    std::size_t i = 0;
 
     // loop through each char till EOF
     while (i < str.size())
@@ -133,7 +133,7 @@ std::vector<Token> tokenizer(const std::string &str)
         else if (std::isalpha(c) || c == '_')
         {
             // advances the index while we have a letter or underscore
-            int start_index = i;
+            std::size_t start_index = i;
             while (i < str.size() && (isalnum(str[i]) || str[i] == '_'))
             {
                 i++;
