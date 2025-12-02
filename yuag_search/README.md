@@ -88,46 +88,5 @@ yuag_search/
 ├── static/
 │   └── styles.css      # Shared styling for tables and layout
 └── results.html        # Partial template or legacy file for search results (if used)
-(Names may differ slightly depending on the final course submission; this is the intended layout.)
-
-Running the App Locally
-Install dependencies
-
-From inside yuag_search/:
-
-bash
-Copy code
-pip install flask
-If you are using a virtual environment, activate it first.
-
-Place the database
-
-Copy lux.sqlite into the yuag_search/ directory (it is not tracked in git because of its size).
-
-Start the server
-
-bash
-Copy code
-python runserver.py 5000
-Open the app
-
-Visit:
-
-Primary search page: http://localhost:5000/
-
-Example detail page: http://localhost:5000/obj/<some_obj_id>
-
-Notes & Possible Extensions
-The application currently reads from a static SQLite file and does not modify the collection.
-
-It could be extended with:
-
-Pagination on the search results.
-
-Client-side column sorting.
-
-Deployment to a production server with Gunicorn and Nginx.
-
-Migration to PostgreSQL with an ORM such as SQLAlchemy.
 
 This project shows my ability to build a full Flask-based search interface, design SQL queries over a non-trivial schema, and connect server-side logic with an interactive, AJAX-driven frontend.
