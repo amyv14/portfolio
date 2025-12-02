@@ -8,8 +8,8 @@
 #include <cstdlib>
 #include <filesystem>
 
-// g++ -std=c++2a lexer.cpp compiler.cpp -o compile
-// ./compile ../scripts/1.basic
+// g++ -std=c++2a ./cpp/compiler.cpp ./cpp/lexer.cpp -o compile
+// ./compile ./cpp/example.basic
 
 namespace fs = std::filesystem;
 

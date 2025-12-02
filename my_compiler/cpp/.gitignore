@@ -1,0 +1,15 @@
+# Object files
+*.o
+
+# Build artifacts
+compile
+lexer
+*/compile
+*/lexer
+
+# Generated C files from .basic
+*.basic.c
+*.c
+
+
+
