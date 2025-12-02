@@ -1,52 +1,141 @@
+# BowWow Builder
 
-# Welcome to the BowWow Builder!
+## Overview
 
-## Description
-For the final project, we have created an app that allows users to build their lunch meal at the Bow Wow, keeping track of their total cost, and share it with others.
-There are four key pages. The **home page** is where users can interact, posting their daily Bow Wow combos, comments, and rating their meals, along with others. The **food page** where users can browse through items in the BowWow, keeping a running total that shows how much they are over or under the $12 (price equivalent of one meal swipe). The **cart page** allows users to save a meal bundle and post it. And finally, the **profile page** where users can see their account information, a history of their meal bundles, and the average ratings on their meals. 
+BowWow Builder is a full-stack mobile application that allows users to create custom meal combinations from Yale’s Bow Wow dining hall, track their total cost, and share their creations with others. I designed and implemented this project as a final course project, building both the frontend and backend components and deploying the system on AWS.
+
+The app offers four main pages:
+
+- **Home:** A social feed where users post meal bundles, browse others’ meals, and interact through comments and ratings.
+- **Food:** A browsable list of all Bow Wow items. Users can view prices, track how close they are to the $12 meal swipe value, and add items to their cart.
+- **Cart:** A bundle-building interface where users assemble a meal, save it, and optionally publish it publicly.
+- **Profile:** Displays the user’s account information, history of posted meals, and average rating from the community.
+
+The entire system supports authentication, bundle creation, real-time ratings and comments, and dynamic item retrieval from a PostgreSQL database.
+
+---
 
 ## Tech Stack
-To create this app, we used React Native for compatibility with IOS and Android systems and Expo for easy routing and quick testing. For the database, we used PostgreSQL. For the application, we used Python with Flask for the backend queries and TypeScript for each page. Our database was previously local to the server, but the entire project is hosted on AWS through an EC2 instance. This allows us to maintain a unified IP address allowing for anyone in the EC2 instance to gain access to the database and to run the application without locally storing it.
 
+I built BowWow Builder as a fully integrated full-stack system using:
 
-## Instructions for Running
-The following instructions will be for Mac/Linux machines.
+### **Frontend**
+- **React Native (TypeScript)** for cross-platform development (iOS + Android)
+- **Expo Router** for navigation and live testing
+- **Custom state management** (CartContext) to manage bundle building
+- **Dynamic image loading** from server asset routes
 
-Our libraries and databases have all been set up on our EC2 instances. As a result, we will be walking through how to set up the EC2 locally. Please contact us if you run into any issues that we have not outlined.
+### **Backend**
+- **Flask (Python)** for API routing and business logic
+- **Flask-Bcrypt** for password hashing
+- **JWT Authentication** for stateless login and protected routes
+- **PostgreSQL** for persistent storage
+- **Psycopg2** as the database connector
+- **Flask-CORS** for secure frontend communication
 
-**Set Up**
-- Download the my_key.pem file on your computer with the path saved. 
-- Copy the following into the terminal: `ssh -i <path to the_key.pem> ec2-user@13.58.115.85`
-	- For example `ssh -i /Users/amy/Desktop/the_key.pem ec2-user@13.58.115.85`
-- Also be sure to clone our Github repository with `git clone https://github.com/yale-cpsc-419-25sp/project-project-group-5.git` in a location you will be able to navigate to later
+### **Deployment**
+- Full deployment on **AWS EC2**
+- Persistent backend IP accessible to the React Native client
+- PostgreSQL database hosted on EC2 for shared access across users
 
+This setup ensures that the entire application can be run from a single cloud environment without local database requirements.
 
-**To run the app**
-- Once in the EC2 Instance, run: `cd project-project-group-5/Bowow-Builder/`
-- From here, run `python3 appp.py` in the terminal to connect to the server (at port 9000)
-	- If you recieve `Address already in use Port 9000 is in use by another program. Either identify and stop that program, or start the server with a different port.` This is not an error and means that the server is already set up and running for you. 
-- Then in a second terminal outside of the instance, cd into the `Bowow-Builder folder` from our Github repo
-- Finally, type `npx expo start` (if there are error messages, ensure expo is correctly installed. we experimented with our friends' computers, and they had to uninstall some packages until it was compatiable)
-- The app can then be displayed in two ways:
-	- Download the ExpoGo app on another device and scan the QR code. (RECOMMENDED as it will be simpler)
-	- Connect using an Android/IOS emulator.
+---
 
 ## Codebase Structure
-The top of our project is the Bowow-Builder folder. Bowow-Builder holds our code regarding the app, and is split into multiple sections, listed below:
 
-### App
-The app folder holds all our front-end code regarding the actual app such as the login and sign up, before the user has to authenticate themselves. Once the user is authenticated through logging in, the (tabs) folder can be accessed. This folder holds the front end and css for the main pages of the app (home, shop, cart, and profile) which would require a user id token to access correctly.
+### `App/` (Frontend)
 
-### Assets
-The assets folder holds all the images to the app, and the food item images are separated into the images folder. These images are loaded onto the database and accessed using the read.py in the db folder. The images outside of the assets folder correlate to simple UI/UX design choices like the front display screen, the cart, trash, etc.
+Contains all React Native screens, components, styles, and routing logic:
 
-### Database
-In order to load in our database locally, we created the db folder which takes in different csv files and adds the information into the database depending on the function, allowing our database to be third normal form as each table is connected. Cat.csv contains the category, and is connected to catitems.csv through its category id. All the items in items.csv are sorted by an ID number which connects its categories through catitems.csv. The items.csv contains the ID, item name, price, and image route which are all necessary for the home page to run. To run the database, read.py connects to the postgreSQL user and creates all tables locally.
+- **Login/Signup** (unauthenticated screens)
+- **Tabs** (authenticated app structure):
+  - **Home**
+  - **Shop** (food list)
+  - **Cart**
+  - **Profile**
+
+After a successful login, a JWT token is stored and required for accessing protected backend routes.
+
+---
+
+### `assets/`
+
+Holds all images and icons used by the app:
+
+- Food item images (referenced using `img_route` in the database)
+- UI assets such as:
+  - App logo
+  - Icons (cart, profile, etc.)
+
+Images are served from Flask via:
+
+```bash
+/assets/<filename>
+```
+
+### `db/`
+
+Contains CSV files and initialization scripts for the PostgreSQL database:
+
+- `items.csv` — list of all BowWow food items, prices, and image file references  
+- `cat.csv` — category definitions  
+- `catitems.csv` — many-to-many mappings between items and categories  
+- `read.py` — Python script that loads all CSV data into PostgreSQL using `psycopg2`
+
+The database schema is fully normalized to **3NF** and supports:
+
+- Users  
+- Meals  
+- Items  
+- Meal–item linking table  
+- Ratings (one rating per user per meal)  
+- Timestamped comments  
+- Food categories  
+
+---
+
+### `appp.py` (Backend)
+
+The main Flask backend file, responsible for:
+
+- **JWT Authentication**
+  - `/login`
+  - `/signup`
+
+- **Item Retrieval**
+  - `GET /items`
+
+- **Image Serving**
+  - `GET /assets/<filename>`
+
+- **Meal Bundle Operations**
+  - `POST /api/meals`
+  - `DELETE /api/meals/<meal_id>`
+  - `GET /api/meals` (includes meals, items, ratings, comments)
+
+- **Ratings + Comments**
+  - `POST /api/ratings`
+  - `POST /api/comments`
+  - `GET /api/meals/<meal_id>/comments`
+  - `DELETE /api/comments/<comment_id>`
+
+- **User Profile**
+  - `GET /api/profile`  
+    Returns user details, posted meals, and rating statistics
+
+Other features include:
+
+- SQL query execution via `psycopg2`  
+- Token decoding utilities  
+- CORS configuration  
+- Static asset routing  
+- Data serialization for client consumption
 
 ### appp.py
 Appp.py holds the flask API portion of the code, along with encryption and part of the tokenization. The get_current_user_id allows for the tokens to be decoded, and the routes help connect the SQL queries to the frontend.
 
-Here are the following routes to navigate our backend
+Here are the following routes to navigate the backend
  - `@app.route('/assets/<path:filename>')` - for image routes
  - `@app.route("/items", methods=["GET"])` - access to item database
  - `@app.route("/api/meals", methods=["GET"])` - get meals from itemsdb
@@ -60,11 +149,18 @@ Here are the following routes to navigate our backend
  - `@app.route('/login', methods=['POST'])` - verify login credentials again
  - `@app.route("/signup", methods=["POST"])`- add sign up credentials to the database
 
- ### React Native Modularity and Code Structure Explaination
- We opted to use React Native which combines the CSS, HTML-like componenets, and Typescript all in one file because of it's intuitive development experieince. By having the application and presentation layers of each page in one file, it was easy for each team member to work on a single file and reduces potential conflicts. It simplified our repository and allowed us to code for both IOS and Android. 
-
 ## Database
-![diagram of our database](database_diagram.png)
+![diagram of the database](database_diagram.png)
 
-## Resources
-[Click here for our presentation](https://docs.google.com/presentation/d/11VlMHjL7tEJayRi69YNYi9CN7ZkigBryy6pFysgQv3Y/edit?usp=sharing)
+
+## Summary
+
+BowWow Builder is a full-stack mobile application that demonstrates:
+- Cross-platform mobile development
+- Backend API engineering
+- Database design and normalization
+- Authentication and security
+- AWS cloud deployment
+- Integration of frontend + backend systems
+
+This project represents the culmination of a full semester of development, engineering, testing, and deployment.
