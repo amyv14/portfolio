@@ -2,7 +2,7 @@
 
 ## Overview
 
-BowWow Builder is a full-stack mobile application that allows users to create custom meal combinations from Yale’s Bow Wow dining hall, track their total cost, and share their creations with others. I designed and implemented this project as a final course project, building both the frontend and backend components and deploying the system on AWS.
+BowWow Builder is a full-stack mobile application that allows users to create custom meal combinations from Yale’s Bow Wow dining hall, track their total cost, and share their creations with others. I collborated with one other teammate on this project and deployed the system on AWS.
 
 The app offers four main pages:
 
