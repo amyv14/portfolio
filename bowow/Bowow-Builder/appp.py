@@ -7,7 +7,7 @@ import os
 import traceback
 from datetime import timedelta, datetime, timezone
 from typing import Dict, List
-## from constants import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, INVALID_SALT
+from constants import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, INVALID_SALT
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY", "dev-only-secret")
@@ -20,11 +20,11 @@ bcrypt = Bcrypt(app)
 # Database connection
 def get_db_connection():
    return psycopg2.connect(
-       dbname=os.getenv("DB_NAME", "itemsdb"),
+       dbname=os.getenv("DB_NAME"),
        user=os.getenv("DB_USER"),
        password=os.getenv("DB_PASSWORD"),
        host=os.getenv("DB_HOST"),
-       port=os.getenv("DB_PORT", "5432"),
+       port=os.getenv("DB_PORT"),
    )
 
 def get_current_user_id():
@@ -447,7 +447,7 @@ def login():
     try:
         curr.execute("SELECT * FROM users WHERE username = %s;", (username,))
         exists_user = curr.fetchone()        
-        # MAKE SURE TO CHECK THIS W UR LOCAL DB EVERYONE!!!!!
+        # MAKE SURE TO CHECK THIS W UR LOCAL DB !!!!!
         if exists_user and bcrypt.check_password_hash(exists_user[3], password):
             token = jwt.encode({
                 'user_id': exists_user[0],
